@@ -5,8 +5,10 @@ const router = require("./router");
 
 const app = express();
 
+const PORT = process.env.PORT || 8000
+
 app.use(express.json());
 
 app.use(router);
 
-app.listen(8000, () => console.log("Server is running on por 8000"));
+app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
