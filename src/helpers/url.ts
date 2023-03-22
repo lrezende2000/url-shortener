@@ -1,1 +1,0 @@
-export const buildFakeUrl = (id: string) => `${process.env.BASE_URL}/${id}`
