@@ -21,8 +21,21 @@ const listUrl = async (filters) => {
   return urls;
 };
 
+const deleteUrl = async (id) => {
+  const foundUrl = await client.url.findFirst({ where: id });
+
+  if (foundUrl) {
+    await client.url.delete({ where: { id } });
+
+    return true
+  }
+
+  return false
+};
+
 module.exports = {
   createUrl,
   getUrl,
   listUrl,
+  deleteUrl,
 };

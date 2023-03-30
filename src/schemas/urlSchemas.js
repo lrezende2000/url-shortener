@@ -4,6 +4,7 @@ const createUrlSchema = yup.object().shape({
   realLink: yup
     .string()
     .required("Link é obrigatório")
+    .url("Link deve ser uma URL válida")
     .typeError("Link deve ser uma string"),
 });
 

@@ -16,6 +16,8 @@
     "dayjs": "^1.11.7",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "swagger-ui-express": "^4.6.2",
+    "yamljs": "^0.3.0",
     "yup": "^1.0.2"
   }
 }

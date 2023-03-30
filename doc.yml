@@ -1,0 +1,202 @@
+openapi: 3.0.0
+servers:
+  # Added by API Auto Mocking Plugin
+  - description: Heroku API
+    url: https://url-shotner-uny.herokuapp.com
+  - description: Local API
+    url: http://localhost:8000
+info:
+  version: "1.0.0"
+  title: URL Shortner
+  description: Encurtador de URL
+paths:
+  /url/encurtar:
+    post:
+      tags:
+        - URL
+      operationId: createUrl
+      responses:
+        '201':
+          description: URL encurtada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateURLResponse'
+        '400':
+          description: Não foi possível encurtar a URL
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Não foi possível encurtar a url'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateURLRequest'
+  /url/listar:
+    get:
+      tags:
+        - URL
+      operationId: listUrl
+      parameters:
+        - name: id
+          in: query
+          required: false
+          schema:
+            type: string
+            format: uuid
+        - name: date
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date
+      responses:
+        '200':
+          description: Listagem URLs
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/URLListResponse'
+        '400':
+          description: Não foi possível encurtar a URL
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Não foi possível buscar as URLs'
+  '/deletar/{id}':
+    delete:
+      tags:
+        - URL
+      operationId: deleteUrl
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: URL Deletada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Não foi possível buscar as URLs'
+        '400':
+          description: Não foi possível deletar a URL
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Não foi possível deletar a URL'
+  '/{id}':
+    get:
+      description: Buscar URL original
+      operationId: getUrl
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Busca de URL original
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: false
+                  link:
+                    type: string
+                    example: 'https://google.com.br'
+        '400':
+          description: Não foi possível encontrar a URL encurtada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: boolean
+                    example: true
+                  message:
+                    type: string
+                    example: 'Não foi possível encontrar o link original'
+      tags:
+        - URL
+components:
+  schemas:
+    URL:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          example: 'e55f13e3-cd5e-48d2-b50e-4f5bef3c23f6'
+        realLink:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+    URLListResponse:
+      type: object
+      properties:
+        error:
+          type: boolean
+          example: true
+        links:
+          type: array
+          items:
+            $ref: '#/components/schemas/URL'
+    CreateURLRequest:
+      type: object
+      properties:
+        realLink:
+          type: string
+          format: uri
+          example: 'https://www.google.com/'
+    CreateURLResponse:
+      type: object
+      properties:
+        error:
+          type: boolean
+        message:
+          type: string
+        url:
+          type: string
+          format: uri
+          example: 'https://url-shotner-uny.herokuapp.com/e55f13e3-cd5e-48d2-b50e-4f5bef3c23f6'

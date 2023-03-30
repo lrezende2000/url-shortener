@@ -2,7 +2,7 @@ const express = require("express");
 const dayjs = require("dayjs");
 
 const { listUrlSchema } = require("../schemas/urlSchemas");
-const { createUrl, listUrl } = require("../services/UrlService");
+const { createUrl, listUrl, deleteUrl } = require("../services/UrlService");
 const { buildFakeUrl } = require("../helpers/url");
 
 const router = express.Router();
@@ -51,6 +51,24 @@ router.get("/listar", async (req, res) => {
     return res.status(400).json({
       error: true,
       message: "Não foi possível buscar as URLs",
+    });
+  }
+});
+
+router.delete("/deletar/:id", async (req, res) => {
+  try {
+    const urlDeleted = await deleteUrl(req.params.id);
+
+    if (!urlDeleted) throw new Error();
+
+    return res.json({
+      error: false,
+      message: "URL deletada com sucesso!",
+    });
+  } catch {
+    return res.status(400).json({
+      error: true,
+      message: "Não foi possível deletar a URL",
     });
   }
 });

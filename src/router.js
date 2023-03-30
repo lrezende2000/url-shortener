@@ -11,6 +11,8 @@ router.use("/:id", async (req, res) => {
   try {
     const link = await getUrl(req.params.id);
 
+    if (!link) throw new Error();
+
     return res.json({
       error: false,
       link,
